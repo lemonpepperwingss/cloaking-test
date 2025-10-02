@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloaking Link Builder - Custom Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .form-section h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .result-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #e8f5e8;
+            border-radius: 15px;
+            border-left: 4px solid #28a745;
+            display: none;
+        }
+        
+        .result-section.show {
+            display: block;
+        }
+        
+        .result-section h3 {
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+        
+        .link-output {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid #28a745;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin-bottom: 1rem;
+        }
+        
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .copy-btn:hover {
+            background: #218838;
+        }
+        
+        .server-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .server-info h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+        
+        .server-info p {
+            color: #856404;
+            margin: 0.25rem 0;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 1.5rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔗 Cloaking Link Builder</h1>
+            <p>Generate custom cloaking links for your server</p>
+        </div>
+        
+        <div class="content">
+            <div class="server-info">
+                <h4>🖥️ Server Information</h4>
+                <p><strong>Server IP:</strong> 94.156.232.142</p>
+                <p><strong>Domain:</strong> <span id="domain-placeholder">your-domain.com</span></p>
+                <p><strong>Status:</strong> Ready for deployment</p>
+            </div>
+            
+            <form id="linkBuilderForm">
+                <div class="grid">
+                    <div class="form-section">
+                        <h3>🌐 Domain Configuration</h3>
+                        <div class="form-group">
+                            <label for="domain">Your Domain</label>
+                            <input type="text" id="domain" placeholder="your-domain.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="protocol">Protocol</label>
+                            <select id="protocol">
+                                <option value="https">HTTPS (Recommended)</option>
+                                <option value="http">HTTP</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>🎯 Cloaking Settings</h3>
+                        <div class="form-group">
+                            <label for="flowId">Flow ID (from Cloaking.House)</label>
+                            <input type="text" id="flowId" placeholder="83709f9a58f525c7998bc28e5cdd63b3">
+                        </div>
+                        <div class="form-group">
+                            <label for="campaign">Campaign Name</label>
+                            <input type="text" id="campaign" placeholder="My Campaign">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>🔗 Link Parameters</h3>
+                    <div class="grid">
+                        <div class="form-group">
+                            <label for="source">Traffic Source</label>
+                            <input type="text" id="source" placeholder="facebook, google, tiktok">
+                        </div>
+                        <div class="form-group">
+                            <label for="medium">Medium</label>
+                            <input type="text" id="medium" placeholder="cpc, organic, social">
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignId">Campaign ID</label>
+                            <input type="text" id="campaignId" placeholder="camp123">
+                        </div>
+                        <div class="form-group">
+                            <label for="adset">Ad Set</label>
+                            <input type="text" id="adset" placeholder="adset456">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>📊 Tracking Parameters</h3>
+                    <div class="grid">
+                        <div class="form-group">
+                            <label for="clickId">Click ID</label>
+                            <input type="text" id="clickId" placeholder="click789">
+                        </div>
+                        <div class="form-group">
+                            <label for="subId">Sub ID</label>
+                            <input type="text" id="subId" placeholder="sub123">
+                        </div>
+                        <div class="form-group">
+                            <label for="custom1">Custom Parameter 1</label>
+                            <input type="text" id="custom1" placeholder="custom_value">
+                        </div>
+                        <div class="form-group">
+                            <label for="custom2">Custom Parameter 2</label>
+                            <input type="text" id="custom2" placeholder="custom_value">
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">🚀 Generate Cloaking Link</button>
+                <button type="button" class="btn btn-secondary" onclick="clearForm()">🗑️ Clear Form</button>
+            </form>
+            
+            <div id="resultSection" class="result-section">
+                <h3>✅ Generated Cloaking Link</h3>
+                <div class="link-output" id="generatedLink"></div>
+                <button class="copy-btn" onclick="copyLink()">📋 Copy Link</button>
+                
+                <div style="margin-top: 1rem;">
+                    <h4>🔍 Link Breakdown:</h4>
+                    <div id="linkBreakdown"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('linkBuilderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generateLink();
+        });
+        
+        function generateLink() {
+            const domain = document.getElementById('domain').value;
+            const protocol = document.getElementById('protocol').value;
+            const flowId = document.getElementById('flowId').value;
+            const campaign = document.getElementById('campaign').value;
+            const source = document.getElementById('source').value;
+            const medium = document.getElementById('medium').value;
+            const campaignId = document.getElementById('campaignId').value;
+            const adset = document.getElementById('adset').value;
+            const clickId = document.getElementById('clickId').value;
+            const subId = document.getElementById('subId').value;
+            const custom1 = document.getElementById('custom1').value;
+            const custom2 = document.getElementById('custom2').value;
+            
+            if (!domain) {
+                alert('Please enter your domain');
+                return;
+            }
+            
+            // Build the base URL
+            let baseUrl = `${protocol}://${domain}`;
+            
+            // Build query parameters
+            const params = new URLSearchParams();
+            
+            if (flowId) params.append('flow', flowId);
+            if (campaign) params.append('campaign', campaign);
+            if (source) params.append('source', source);
+            if (medium) params.append('medium', medium);
+            if (campaignId) params.append('campaign_id', campaignId);
+            if (adset) params.append('adset', adset);
+            if (clickId) params.append('click_id', clickId);
+            if (subId) params.append('sub_id', subId);
+            if (custom1) params.append('custom1', custom1);
+            if (custom2) params.append('custom2', custom2);
+            
+            // Add timestamp for uniqueness
+            params.append('t', Date.now());
+            
+            const finalUrl = `${baseUrl}?${params.toString()}`;
+            
+            // Display the result
+            document.getElementById('generatedLink').textContent = finalUrl;
+            document.getElementById('resultSection').classList.add('show');
+            
+            // Update domain placeholder
+            document.getElementById('domain-placeholder').textContent = domain;
+            
+            // Show link breakdown
+            showLinkBreakdown(baseUrl, params);
+        }
+        
+        function showLinkBreakdown(baseUrl, params) {
+            const breakdown = document.getElementById('linkBreakdown');
+            let html = `<p><strong>Base URL:</strong> ${baseUrl}</p>`;
+            html += `<p><strong>Parameters:</strong></p><ul>`;
+            
+            for (const [key, value] of params.entries()) {
+                html += `<li><code>${key}</code> = <code>${value}</code></li>`;
+            }
+            
+            html += `</ul>`;
+            breakdown.innerHTML = html;
+        }
+        
+        function copyLink() {
+            const link = document.getElementById('generatedLink').textContent;
+            navigator.clipboard.writeText(link).then(function() {
+                alert('Link copied to clipboard!');
+            });
+        }
+        
+        function clearForm() {
+            document.getElementById('linkBuilderForm').reset();
+            document.getElementById('resultSection').classList.remove('show');
+        }
+        
+        // Auto-fill with example data
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('flowId').value = '83709f9a58f525c7998bc28e5cdd63b3';
+            document.getElementById('campaign').value = 'Test Campaign';
+            document.getElementById('source').value = 'facebook';
+            document.getElementById('medium').value = 'cpc';
+        });
+    </script>
+</body>
+</html>
