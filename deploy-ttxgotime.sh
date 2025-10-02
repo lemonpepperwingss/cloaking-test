@@ -23,7 +23,7 @@ echo ""
 
 # Check if files exist
 echo "🔍 Checking local files..."
-files=("index.php" "site.html" "offer.html" "link-builder.html")
+files=("index.php" "site.html" "offer.html" "offer-with-maxconv.html" "maxconv-handler.js" "vps-link-generator.html" "link-builder.html")
 all_files_exist=true
 
 for file in "${files[@]}"; do
@@ -47,7 +47,7 @@ echo ""
 
 # Create deployment package
 echo "📦 Creating deployment package..."
-tar -czf ttxgotime-deploy.tar.gz index.php site.html offer.html link-builder.html
+tar -czf ttxgotime-deploy.tar.gz index.php site.html offer.html offer-with-maxconv.html maxconv-handler.js vps-link-generator.html link-builder.html
 echo "   ✅ Created ttxgotime-deploy.tar.gz"
 echo ""
 
@@ -58,7 +58,7 @@ echo "   scp ttxgotime-deploy.tar.gz $SERVER_USER@$SERVER_IP:/tmp/"
 echo "   ssh $SERVER_USER@$SERVER_IP 'cd $SERVER_PATH && tar -xzf /tmp/ttxgotime-deploy.tar.gz && rm /tmp/ttxgotime-deploy.tar.gz'"
 echo ""
 echo "Option 2 - Individual File Upload:"
-echo "   scp index.php site.html offer.html link-builder.html $SERVER_USER@$SERVER_IP:$SERVER_PATH/"
+echo "   scp index.php site.html offer.html offer-with-maxconv.html maxconv-handler.js vps-link-generator.html link-builder.html $SERVER_USER@$SERVER_IP:$SERVER_PATH/"
 echo ""
 echo "Option 3 - SFTP Upload:"
 echo "   sftp $SERVER_USER@$SERVER_IP"
@@ -66,6 +66,9 @@ echo "   cd $SERVER_PATH"
 echo "   put index.php"
 echo "   put site.html"
 echo "   put offer.html"
+echo "   put offer-with-maxconv.html"
+echo "   put maxconv-handler.js"
+echo "   put vps-link-generator.html"
 echo "   put link-builder.html"
 echo "   quit"
 echo ""
@@ -74,11 +77,18 @@ echo "   1. Log into your VPS control panel"
 echo "   2. Navigate to File Manager"
 echo "   3. Go to /var/www/html directory"
 echo "   4. Upload all files from ttxgotime-deploy.tar.gz"
+echo "      - index.php (cloaking script)"
+echo "      - site.html (white page)"
+echo "      - offer.html (test offer page)"
+echo "      - offer-with-maxconv.html (MaxConv integrated offer page)"
+echo "      - maxconv-handler.js (MaxConv parameter handler)"
+echo "      - vps-link-generator.html (VPS link generator)"
+echo "      - link-builder.html (original link builder)"
 echo ""
 
 echo "🔧 After Deployment:"
 echo "   1. Set proper file permissions:"
-echo "      chmod 644 *.html *.php"
+echo "      chmod 644 *.html *.php *.js"
 echo "      chmod 755 ."
 echo ""
 echo "   2. Test the setup:"
@@ -87,7 +97,9 @@ echo "      curl -I http://$SERVER_IP"
 echo ""
 echo "   3. Verify cloaking:"
 echo "      Visit: http://$DOMAIN (should show white page)"
-echo "      Visit: http://$DOMAIN/link-builder.html (link generator)"
+echo "      Visit: http://$DOMAIN/vps-link-generator.html (VPS link generator)"
+echo "      Visit: http://$DOMAIN/offer-with-maxconv.html (MaxConv integrated offer page)"
+echo "      Visit: http://$DOMAIN/link-builder.html (original link builder)"
 echo ""
 
 echo "🌐 DNS Configuration:"
